@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ai-risk-event-identification"
+version = "0.1.0"
+description = "AI risk event identification pipeline"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "aiohttp>=3.9.0",
+  "pandas>=2.1.0",
+  "pyahocorasick>=2.0.0",
+  "psycopg2-binary>=2.9.11",
+  "python-dateutil>=2.8.2",
+  "python-Levenshtein>=0.25.0",
+  "requests>=2.31.0",
+  "tqdm>=4.66.0",
+  "beautifulsoup4>=4.12.0",
+  "boilerpy3>=1.0.7",
+  "crawl4ai>=0.3.0",
+  "fuzzywuzzy>=0.18.0",
+  "jieba>=0.42.1",
+  "langdetect>=1.0.9",
+  "nltk>=3.8.1",
+  "openai>=1.0.0",
+  "openxlab>=0.1.2",
+  "schedule>=1.2.0",
+  "selenium>=4.18.0",
+  "volcengine-python-sdk>=1.0.0",
+  "warcio>=1.7.4",
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["Database*"]
+
+[dependency-groups]
+dev = [
+  "pytest>=7.0.0",
+]

@@ -1,0 +1,25 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Local environment files
+.env
+.env.local
+
+# Generated outputs and logs
+outputs/Database/
+
+# Database backups
+*.dump
+*.sql.backup
+
+# IDE / OS
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db

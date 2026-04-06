@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+
+outputs/*
+!outputs/.gitkeep
+logs/
+download_dir/*
+
+
+
