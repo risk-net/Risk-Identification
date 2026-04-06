@@ -19,7 +19,6 @@ dependencies = [
   "tqdm>=4.66.0",
   "beautifulsoup4>=4.12.0",
   "boilerpy3>=1.0.7",
-  "crawl4ai>=0.3.0",
   "fuzzywuzzy>=0.18.0",
   "jieba>=0.42.1",
   "langdetect>=1.0.9",
@@ -30,6 +29,11 @@ dependencies = [
   "selenium>=4.18.0",
   "volcengine-python-sdk>=1.0.0",
   "warcio>=1.7.4",
+]
+
+[project.optional-dependencies]
+crawling = [
+  "crawl4ai>=0.3.0",
 ]
 
 [tool.setuptools]
