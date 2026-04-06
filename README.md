@@ -1,18 +1,17 @@
-# AI Risk Event Identification
+# Risk-Identification
+[中文文档](./README_cn.md)
 
-AI 风险事件识别项目，覆盖从多源数据获取、关键词筛选、LLM 三分类识别到评测与数据库导入的完整链路。
+This project is designed to identify AI risk incidents, covering the complete workflow from multi-source data collection, keyword filtering, and LLM three-category classification to evaluation and database import.
 
-## 当前项目范围
+## Project Scope
+- `src/Data_Sources`: Data collection and preprocessing
+- `src/Identification_Method`: Keyword filtering and LLM identification
+- `src/Identification_Evaluation`: Evaluation of keywords and three-category classification
+- `src/Database`: PostgreSQL table schema and import scripts
 
-- `src/Data_Sources`: 数据采集与原始数据整理
-- `src/Identification_Method`: 各数据源的关键词筛选与 LLM 识别
-- `src/Identification_Evaluation`: 关键词筛选与三分类评测
-- `src/Database`: PostgreSQL 导入与事件级数据构建
-
-## 目录结构
-
+## Directory Structure
 ```text
-ai-risk-event-identification/
+Risk-Identification/
 ├── config/
 ├── data/
 ├── keywords/
@@ -28,31 +27,29 @@ ai-risk-event-identification/
 └── README.md
 ```
 
-## 环境要求
-
+## Environment Requirements
 - Python `>=3.11`
-- 建议在仓库根目录安装依赖：
 
 ```bash
 pip install -e .
 python -m nltk.downloader punkt stopwords wordnet
 ```
 
-说明：部分关键词筛选脚本依赖 NLTK 资源；LLM 脚本还需要在对应 `config/Identification_Method-*-llm_filter-config.ini` 中配置 API 参数。
+Note: Some keyword scripts depend on NLTK resources; LLM scripts require API parameter configuration in
+`config/Identification_Method-*-llm_filter-config.ini`.
 
-## 快速开始（最小可运行链路）
-
-### 1) 评测模块（无需外部数据采集）
+## Quick Start
+1. Run evaluation only (no external collection required):
 
 ```bash
 python src/Identification_Evaluation/evaluate_keyword_filter.py
 python src/Identification_Evaluation/evaluate_llm_multiclass.py
 ```
 
-默认输入：`data/evaluation_dataset_2000.json`  
-默认输出：`outputs/Identification_Evaluation/`
+Default input: `data/evaluation_dataset_2000.json`
+Default output: `outputs/Identification_Evaluation/`
 
-### 2) 数据获取与预处理（按需）
+2. Perform data collection as needed:
 
 ```bash
 python src/Data_Sources/AIID/process_AIID.py
@@ -61,60 +58,33 @@ python src/Data_Sources/CommonCrawlNews/process_CommonCrawlNews.py
 python src/Data_Sources/OpenNewsArchive/data_collecting_OpenNewsArchive.py
 ```
 
-对应配置：
-- `config/Data_Sources-AIID-config.ini`
-- `config/Data_Sources-AIAAIC-config.ini`
-- `config/Data_Sources-CommonCrawlNews-config.ini`
-- `config/Data_Sources-OpenNewsArchive-config.ini`
-
-### 3) 识别模块（关键词 + LLM）
-
-示例：
+3. Identification pipeline (keywords + LLM), example:
 
 ```bash
 python src/Identification_Method/OpenNewsArchive/keyword_filter/process_OpenNews.py
 python src/Identification_Method/OpenNewsArchive/llm_filter/async_batch_multi_endpoint_full_dataset.py
 ```
 
-其他主入口：
-- `src/Identification_Method/CommonCrawlNews/keyword_filter/process_wrac.py`
-- `src/Identification_Method/CommonCrawlNews/llm_filter/async_batch_multi_endpoint_full_dataset.py`
-- `src/Identification_Method/Hot_list_word_Dataset/keyword_filter/filter_title.py`
-- `src/Identification_Method/Hot_list_word_Dataset/llm_filter/filter_title_llm.py`
-- `src/Identification_Method/Chinese_Data/llm_filter/async_batch_multi_endpoint_full_dataset.py`
-- `src/Identification_Method/AIID_AIAAIC/llm_filter/async_online_multi_endpoint_full_dataset.py`
-
-### 4) 数据库导入（可选）
-
-1. 初始化表结构：
+4. Optional: Import to database:
 
 ```bash
 psql -h <host> -U <user> -d <database> -f src/Database/schema.sql
-```
-
-2. 执行导入：
-
-```bash
 python src/Database/import_data.py
 python src/Database/import_event_news.py
 ```
 
-配置文件：`config/Database-config.ini`
+Database configuration: `config/Database-config.ini`
 
-## 配置文件约定
+## Configuration File Conventions
+- Data source configurations: `config/Data_Sources-*.ini`
+- Identification configurations: `config/Identification_Method-*-config.ini`
+- Evaluation configurations: `config/Identification_Evaluation-config.ini`
+- Database configuration: `config/Database-config.ini`
 
-- 数据源配置：`config/Data_Sources-*.ini`
-- 识别方法配置：`config/Identification_Method-*-config.ini`
-- 评测配置：`config/Identification_Evaluation-config.ini`
-- 数据库配置：`config/Database-config.ini`
+Relative paths are resolved relative to the repository root by default (subject to script implementation).
 
-路径若为相对路径，默认相对于仓库根目录解析（以各脚本实现为准）。
-
-## 模块文档
-
+## Module Documentation
 - `src/Data_Sources/README.md`
 - `src/Identification_Method/README.md`
 - `src/Identification_Evaluation/README.md`
 - `src/Database/README.md`
-
-如果只想跑通一条链路，建议优先从 `Identification_Evaluation` 开始。
